@@ -1,0 +1,26 @@
+FROM ubuntu:jammy
+
+# Disable updates
+RUN sed -i 's/.*jammy-updates/######&/' /etc/apt/sources.list
+
+ARG DEBIAN_FRONTEND=noninteractive
+
+# install some things from base ubuntu image
+
+RUN apt-get update && apt-get install -y udev
+RUN apt-get update && apt-get install -y init
+RUN apt-get update && apt-get install -y gnupg
+
+# Reenable updates
+RUN sed -i 's/######//' /etc/apt/sources.list && apt-get update
+
+COPY ros-humble-ros-workspace_1.0.2-2jammy_amd64.deb /tmp/ros-humble-ros-workspace_1.0.2-2jammy_amd64.deb
+COPY ros.asc /tmp/ros.asc
+
+RUN apt-key add /tmp/ros.asc
+
+RUN echo 'deb http://packages.ros.org/ros2-testing/ubuntu jammy main' > /etc/apt/sources.list.d/ros2-testing.list && apt update
+RUN apt install -yf /tmp/ros-humble-ros-workspace_1.0.2-2jammy_amd64.deb
+
+
+ENTRYPOINT apt-get install ros-humble-desktop
