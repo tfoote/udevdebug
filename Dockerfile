@@ -7,7 +7,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 # install some things from base ubuntu image
 
-RUN apt-get update && apt-get install -y ubuntu-standard
+RUN apt-get update && apt-get install -y ubuntu-minimal
 
 
 # Reenable updates
