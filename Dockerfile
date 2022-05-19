@@ -14,3 +14,4 @@ RUN apt-get update && apt-get install -y init
 # Reenable updates
 RUN sed -i 's/######//' /etc/apt/sources.list && apt-get update
 
+ENTRYPOINT apt-get install libudev1
